@@ -2,29 +2,42 @@
 const SidebarView = {
   // Sidebar nav items per role
   getNavItems(role) {
-    const common = [
-      { icon: '⊞', label: 'Dashboard', route: '/dashboard' },
-      { icon: '👤', label: 'My Profile', route: '/profile' },
-      { icon: '💼', label: 'Opportunities', route: '/opportunities' },
-      { icon: '♡', label: 'My Interests', route: '/interests' },
-      { icon: '📋', label: 'My Applications', route: '/applications' },
-      { icon: '✏️', label: 'Correction Requests', route: '/corrections' }
+    const shared = [
+      { icon: '🔔', label: 'Notifications', route: '/notifications' },
+      { icon: '❓', label: 'Help & Support', route: '/help' }
     ];
-    if (role === 'employee') {
-      common.push({ icon: '🔔', label: 'Notifications', route: '/notifications' });
-      common.push({ icon: '❓', label: 'Help & Support', route: '/help' });
-    }
-    if (role === 'rmg') {
-      common.push({ icon: '📊', label: 'Matching Results', route: '/matching' });
-      common.push({ icon: '📈', label: 'Interest Dashboard', route: '/interest-dashboard' });
-    }
-    if (role === 'project_head') {
-      common.push({ icon: '➕', label: 'Create Requirement', route: '/create-staffing' });
-    }
-    if (role === 'hrbp') {
-      common.push({ icon: '📊', label: 'Reports', route: '/reports' });
-    }
-    return common;
+    const navMap = {
+      employee: [
+        { icon: '⊞', label: 'Dashboard', route: '/dashboard' },
+        { icon: '👤', label: 'My Profile', route: '/profile' },
+        { icon: '💼', label: 'Opportunities', route: '/opportunities' },
+        { icon: '♡', label: 'My Interests', route: '/interests' },
+        { icon: '📋', label: 'My Applications', route: '/applications' },
+        { icon: '✏️', label: 'Correction Requests', route: '/corrections' },
+        ...shared
+      ],
+      rmg: [
+        { icon: '⊞', label: 'Dashboard', route: '/dashboard' },
+        { icon: '📁', label: 'Staffing Requirements', route: '/opportunities' },
+        { icon: '📊', label: 'Matching Results', route: '/matching' },
+        { icon: '📈', label: 'Interest Dashboard', route: '/interest-dashboard' },
+        ...shared
+      ],
+      project_head: [
+        { icon: '⊞', label: 'Dashboard', route: '/dashboard' },
+        { icon: '📁', label: 'Staffing Requirements', route: '/opportunities' },
+        { icon: '➕', label: 'Create Requirement', route: '/create-staffing' },
+        { icon: '✅', label: 'Approve Shortlist', route: '/approve-shortlist' },
+        ...shared
+      ],
+      hrbp: [
+        { icon: '⊞', label: 'Dashboard', route: '/dashboard' },
+        { icon: '✏️', label: 'Correction Requests', route: '/corrections' },
+        { icon: '📊', label: 'Reports', route: '/reports' },
+        ...shared
+      ]
+    };
+    return navMap[role] || navMap.employee;
   },
 
   render(user, activeRoute) {

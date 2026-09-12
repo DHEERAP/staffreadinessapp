@@ -35,42 +35,46 @@ const EmployeeDashboardView = {
 
         <!-- Main content -->
         <main class="flex-1 p-4 md:p-6">
-          <div class="mb-6">
-            <h1 class="text-xl font-bold text-gray-800">Welcome back, ${user.name.split(' ')[0]}!</h1>
-            <p class="text-gray-500 text-sm">Here's your readiness snapshot.</p>
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <h1 class="text-xl font-bold text-gray-800">Welcome back, ${user.name.split(' ')[0]}!</h1>
+              <p class="text-gray-500 text-sm">Here's what needs your attention today.</p>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="Router.navigate('/opportunities')" class="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition">Browse Opportunities</button>
+              <button onclick="Router.navigate('/corrections')" class="px-4 py-2 border border-gray-200 text-gray-600 text-sm rounded-lg hover:bg-gray-50 transition">Request Correction</button>
+            </div>
           </div>
 
-          <!-- Stats cards -->
+          <!-- Action Stats -->
           <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
-            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-              <p class="text-xs text-gray-500 mb-1">Profile Completeness <span class="text-blue-500">*</span></p>
-              <p class="text-2xl font-bold text-gray-800">${stats.profileCompleteness}%</p>
-              <p class="text-xs text-green-600 mt-1 flex items-center gap-1"><span class="w-2 h-2 bg-green-500 rounded-full inline-block"></span> Good</p>
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 cursor-pointer hover:border-blue-300 transition" onclick="Router.navigate('/opportunities')">
+              <p class="text-xs text-gray-500 mb-1">New Opportunities</p>
+              <p class="text-2xl font-bold text-blue-600">${stats.recommendedOpportunities}</p>
+              <p class="text-xs text-blue-500 mt-1">→ Browse now</p>
             </div>
-            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-              <p class="text-xs text-gray-500 mb-1">Verified Skills <span class="text-blue-500">*</span></p>
-              <p class="text-2xl font-bold text-gray-800">${stats.verifiedSkills}</p>
-              <p class="text-xs text-green-600 mt-1 flex items-center gap-1"><span class="w-2 h-2 bg-green-500 rounded-full inline-block"></span> +2 this month</p>
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 cursor-pointer hover:border-green-300 transition" onclick="Router.navigate('/interests')">
+              <p class="text-xs text-gray-500 mb-1">Active Interests</p>
+              <p class="text-2xl font-bold text-green-600">${stats.activeInterests}</p>
+              <p class="text-xs text-green-500 mt-1">→ Track status</p>
             </div>
-            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-              <p class="text-xs text-gray-500 mb-1">Recommended Opp. <span class="text-blue-500">*</span></p>
-              <p class="text-2xl font-bold text-gray-800">${stats.recommendedOpportunities}</p>
-              <p class="text-xs text-green-600 mt-1 flex items-center gap-1"><span class="w-2 h-2 bg-green-500 rounded-full inline-block"></span> New opportunities</p>
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 cursor-pointer hover:border-orange-300 transition" onclick="Router.navigate('/applications')">
+              <p class="text-xs text-gray-500 mb-1">My Applications</p>
+              <p class="text-2xl font-bold text-orange-500">3</p>
+              <p class="text-xs text-orange-500 mt-1">→ View progress</p>
             </div>
-            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-              <p class="text-xs text-gray-500 mb-1">Active Interests <span class="text-blue-500">*</span></p>
-              <p class="text-2xl font-bold text-gray-800">${stats.activeInterests}</p>
-              <p class="text-xs text-blue-600 mt-1 flex items-center gap-1"><span class="w-2 h-2 bg-blue-500 rounded-full inline-block"></span> View status</p>
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 cursor-pointer hover:border-purple-300 transition" onclick="Router.navigate('/corrections')">
+              <p class="text-xs text-gray-500 mb-1">Pending Corrections</p>
+              <p class="text-2xl font-bold text-purple-600">1</p>
+              <p class="text-xs text-purple-500 mt-1">→ Check status</p>
             </div>
           </div>
 
-          <!-- Bottom section -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Readiness Overview -->
             <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-              <h3 class="font-semibold text-gray-800 mb-4">Readiness Overview</h3>
+              <h3 class="font-semibold text-gray-800 mb-4">My Readiness Overview</h3>
               <div class="flex items-center gap-6">
-                <!-- Donut chart -->
                 <div class="relative w-28 h-28 flex-shrink-0">
                   <svg viewBox="0 0 36 36" class="w-28 h-28 -rotate-90">
                     <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f3f4f6" stroke-width="3"/>
@@ -80,14 +84,15 @@ const EmployeeDashboardView = {
                   </svg>
                   <div class="absolute inset-0 flex flex-col items-center justify-center">
                     <span class="text-xl font-bold text-gray-800">${stats.readinessScore}%</span>
+                    <span class="text-xs text-gray-400">Score</span>
                   </div>
                 </div>
-                <!-- Legend -->
-                <div class="space-y-2 text-sm">
-                  <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-green-500 flex-shrink-0"></span><span class="text-gray-600">Highly Suitable</span><span class="ml-auto font-semibold text-gray-800">${breakdown.highlySuitable}</span></div>
-                  <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-blue-500 flex-shrink-0"></span><span class="text-gray-600">Suitable</span><span class="ml-auto font-semibold text-gray-800">${breakdown.suitable}</span></div>
-                  <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-orange-400 flex-shrink-0"></span><span class="text-gray-600">Consider with Gaps</span><span class="ml-auto font-semibold text-gray-800">${breakdown.considerWithGaps}</span></div>
-                  <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-red-400 flex-shrink-0"></span><span class="text-gray-600">Not Recommended</span><span class="ml-auto font-semibold text-gray-800">${breakdown.notRecommended}</span></div>
+                <div class="space-y-2 text-sm flex-1">
+                  <div class="flex items-center justify-between"><span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-green-500"></span>Highly Suitable</span><span class="font-semibold">${breakdown.highlySuitable}</span></div>
+                  <div class="flex items-center justify-between"><span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-blue-500"></span>Suitable</span><span class="font-semibold">${breakdown.suitable}</span></div>
+                  <div class="flex items-center justify-between"><span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-orange-400"></span>Consider with Gaps</span><span class="font-semibold">${breakdown.considerWithGaps}</span></div>
+                  <div class="flex items-center justify-between"><span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-red-400"></span>Not Recommended</span><span class="font-semibold">${breakdown.notRecommended}</span></div>
+                  <a href="#/profile" class="block text-xs text-blue-600 hover:underline mt-2">View full profile →</a>
                 </div>
               </div>
             </div>
@@ -101,17 +106,12 @@ const EmployeeDashboardView = {
               <div class="space-y-3">
                 ${topOpportunities.map(opp => `
                   <div class="flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition cursor-pointer" onclick="Router.navigate('/opportunities')">
-                    <div class="flex items-center gap-3">
-                      <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 24 24"><path d="M20 6h-2.18c.07-.44.18-.88.18-1.36C18 2.53 15.47 0 12.36 0c-1.73 0-3.24.87-4.19 2.19L7 3 5.83 2.19C4.88.87 3.37 0 1.64 0 .73 0 0 .73 0 1.64c0 .48.11.92.18 1.36H0v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8l2-2h-2zm-8-4c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"/></svg>
-                      </div>
-                      <div>
-                        <p class="text-sm font-medium text-gray-800">${opp.title}</p>
-                        <p class="text-xs text-gray-500">${opp.project}</p>
-                      </div>
+                    <div>
+                      <p class="text-sm font-medium text-gray-800">${opp.title}</p>
+                      <p class="text-xs text-gray-500">${opp.project}</p>
                     </div>
                     <div class="text-right">
-                      <p class="${Helpers.getMatchScoreColor(opp.matchScore)} text-sm">${opp.matchScore}%</p>
+                      <p class="${Helpers.getMatchScoreColor(opp.matchScore)} text-sm font-bold">${opp.matchScore}%</p>
                       ${Helpers.getSuitabilityBadge(opp.suitability)}
                     </div>
                   </div>`).join('')}

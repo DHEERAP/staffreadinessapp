@@ -11,29 +11,15 @@ const AppController = {
     const user = AuthModel.getCurrentUser();
     if (!user) { Router.navigate('/login'); return; }
 
-    if (user.role === 'employee') {
-      const stats = EmployeeModel.getDashboardStats(user.id);
-      const breakdown = EmployeeModel.getReadinessBreakdown(user.id);
-      const topOpps = OpportunityModel.getAll().slice(0, 3);
-      this.render(EmployeeDashboardView.render(user, stats, breakdown, topOpps));
-    } else if (user.role === 'rmg') {
-      const stats = EmployeeModel.getDashboardStats(user.id);
-      const breakdown = EmployeeModel.getReadinessBreakdown(user.id);
-      const topOpps = OpportunityModel.getAll().slice(0, 3);
-      this.render(EmployeeDashboardView.render(user, stats, breakdown, topOpps));
+    if (user.role === 'rmg') {
+      this.render(RmgDashboardView.render(user));
     } else if (user.role === 'project_head') {
-      const stats = { profileCompleteness: 90, verifiedSkills: 8, recommendedOpportunities: 3, activeInterests: 2, readinessScore: 85 };
-      const breakdown = { highlySuitable: 3, suitable: 2, considerWithGaps: 1, notRecommended: 0 };
-      const topOpps = OpportunityModel.getAll().slice(0, 3);
-      this.render(EmployeeDashboardView.render(user, stats, breakdown, topOpps));
+      this.render(ProjectHeadDashboardView.render(user));
     } else if (user.role === 'hrbp') {
-      const stats = { profileCompleteness: 95, verifiedSkills: 15, recommendedOpportunities: 5, activeInterests: 4, readinessScore: 90 };
-      const breakdown = { highlySuitable: 4, suitable: 3, considerWithGaps: 2, notRecommended: 0 };
-      const topOpps = OpportunityModel.getAll().slice(0, 3);
-      this.render(EmployeeDashboardView.render(user, stats, breakdown, topOpps));
+      this.render(HrbpDashboardView.render(user));
     } else {
-      const stats = { profileCompleteness: 80, verifiedSkills: 10, recommendedOpportunities: 4, activeInterests: 2, readinessScore: 75 };
-      const breakdown = { highlySuitable: 2, suitable: 3, considerWithGaps: 1, notRecommended: 0 };
+      const stats = EmployeeModel.getDashboardStats(user.id);
+      const breakdown = EmployeeModel.getReadinessBreakdown(user.id);
       const topOpps = OpportunityModel.getAll().slice(0, 3);
       this.render(EmployeeDashboardView.render(user, stats, breakdown, topOpps));
     }
@@ -77,12 +63,12 @@ const AppController = {
     Router.register('/approve-shortlist', () => ApprovalController.showApproveShortlist());
     Router.register('/corrections', () => CorrectionController.showCorrectionRequests());
     Router.register('/interest-dashboard', () => InterestController.showInterestDashboard());
-    Router.register('/profile', () => this.showPlaceholder('My Profile'));
-    Router.register('/interests', () => this.showPlaceholder('My Interests'));
-    Router.register('/applications', () => this.showPlaceholder('My Applications'));
+    Router.register('/profile', () => { const u = AuthModel.getCurrentUser(); if (!u) { Router.navigate('/login'); return; } this.render(MyProfileView.render(u)); });
+    Router.register('/interests', () => { const u = AuthModel.getCurrentUser(); if (!u) { Router.navigate('/login'); return; } this.render(MyInterestsView.render(u)); });
+    Router.register('/applications', () => { const u = AuthModel.getCurrentUser(); if (!u) { Router.navigate('/login'); return; } this.render(MyApplicationsView.render(u)); });
+    Router.register('/reports', () => { const u = AuthModel.getCurrentUser(); if (!u) { Router.navigate('/login'); return; } this.render(ReportsView.render(u)); });
+    Router.register('/help', () => { const u = AuthModel.getCurrentUser(); if (!u) { Router.navigate('/login'); return; } this.render(HelpView.render(u)); });
     Router.register('/notifications', () => this.showPlaceholder('Notifications'));
-    Router.register('/help', () => this.showPlaceholder('Help & Support'));
-    Router.register('/reports', () => this.showPlaceholder('Reports'));
   },
 
   // Initialize the app

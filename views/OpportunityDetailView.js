@@ -5,19 +5,24 @@ const OpportunityDetailView = {
     const rb = opp.readinessBreakdown;
     return `
       ${sidebar}
-      <div class="ml-56 flex flex-col min-h-screen bg-gray-50">
-        <header class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between sticky top-0 z-20">
-          <button onclick="Router.navigate('/opportunities')" class="flex items-center gap-2 text-blue-600 text-sm hover:underline">
-            ← Back to Opportunities
-          </button>
+      <div class="main-content md:ml-56 flex flex-col min-h-screen bg-gray-50">
+        <header class="bg-white border-b border-gray-200 px-4 md:px-6 py-3 flex items-center justify-between sticky top-0 z-20">
+          <div class="flex items-center gap-3">
+            <button id="hamburgerBtn" onclick="SidebarView.openSidebar()" class="p-2 text-gray-600 hover:text-gray-800 md:hidden">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+            <button onclick="Router.navigate('/opportunities')" class="flex items-center gap-2 text-blue-600 text-sm hover:underline">
+              ← Back to Opportunities
+            </button>
+          </div>
           <div class="flex items-center gap-2">
             <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold">${user.avatar}</div>
             <div><p class="text-sm font-medium text-gray-800">Hello, ${user.name.split(' ')[0]}</p><p class="text-xs text-gray-500">${user.designation}</p></div>
           </div>
         </header>
-        <main class="flex-1 p-6">
+        <main class="flex-1 p-4 md:p-6">
           <!-- Title row -->
-          <div class="flex items-start justify-between mb-4">
+          <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">
             <div>
               <h1 class="text-xl font-bold text-gray-800">${opp.title}</h1>
               <p class="text-gray-500 text-sm">${opp.project}</p>
@@ -63,7 +68,7 @@ const OpportunityDetailView = {
           </div>
 
           <div id="tab-content-2" class="tab-content">
-            <div class="grid grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <!-- Left: Score -->
               <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
                 <h3 class="font-semibold text-gray-800 mb-4">Your Readiness Score</h3>

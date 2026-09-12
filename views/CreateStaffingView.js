@@ -6,21 +6,26 @@ const CreateStaffingView = {
     const sidebar = SidebarView.render(user, '/create-staffing');
     return `
       ${sidebar}
-      <div class="ml-56 flex flex-col min-h-screen bg-gray-50">
-        <header class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between sticky top-0 z-20">
-          <div class="text-sm text-gray-500">${Helpers.getBreadcrumb(['Dashboard', 'Staffing Requirements', 'Create New'])}</div>
+      <div class="main-content md:ml-56 flex flex-col min-h-screen bg-gray-50">
+        <header class="bg-white border-b border-gray-200 px-4 md:px-6 py-3 flex items-center justify-between sticky top-0 z-20">
+          <div class="flex items-center gap-3">
+            <button id="hamburgerBtn" onclick="SidebarView.openSidebar()" class="p-2 text-gray-600 hover:text-gray-800 md:hidden">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+            <div class="hidden sm:block text-sm text-gray-500">${Helpers.getBreadcrumb(['Dashboard', 'Staffing Requirements', 'Create New'])}</div>
+          </div>
           <div class="flex items-center gap-2">
             <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold">${user.avatar}</div>
             <div><p class="text-sm font-medium text-gray-800">${user.designation}</p><p class="text-xs text-gray-500">${user.name}</p></div>
           </div>
         </header>
-        <main class="flex-1 p-6 max-w-4xl">
+        <main class="flex-1 p-4 md:p-6 max-w-4xl">
           <h1 class="text-lg font-bold text-gray-800 mb-5">Create Staffing Requirement</h1>
           <form id="staffingForm" novalidate>
             <!-- Basic Information -->
             <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100 mb-5">
               <h2 class="font-semibold text-gray-800 mb-4">Basic Information</h2>
-              <div class="grid grid-cols-3 gap-4 mb-4">
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1">Project Name <span class="text-red-500">*</span></label>
                   <input id="projectName" type="text" placeholder="Enter project name" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
@@ -45,7 +50,7 @@ const CreateStaffingView = {
                   <p id="noOfResourcesErr" class="text-red-500 text-xs mt-1 hidden">Required</p>
                 </div>
               </div>
-              <div class="grid grid-cols-2 gap-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1">Start Date <span class="text-red-500">*</span></label>
                   <input id="startDate" type="date" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
@@ -68,7 +73,7 @@ const CreateStaffingView = {
             <!-- Mandatory Requirements -->
             <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100 mb-5">
               <h2 class="font-semibold text-gray-800 mb-4">Mandatory Requirements</h2>
-              <div class="grid grid-cols-2 gap-4 mb-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1">Skills <span class="text-red-500">*</span></label>
                   <div id="skillTags" class="flex flex-wrap gap-2 p-2 border border-gray-300 rounded-lg min-h-10 bg-white">
@@ -93,7 +98,7 @@ const CreateStaffingView = {
             <!-- Additional Information -->
             <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100 mb-5">
               <h2 class="font-semibold text-gray-800 mb-4">Additional Information</h2>
-              <div class="grid grid-cols-2 gap-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1">Project Description</label>
                   <textarea id="projectDescription" rows="3" placeholder="Enter project description..." class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>

@@ -4,13 +4,18 @@ const EmployeeDashboardView = {
     const sidebar = SidebarView.render(user, '/dashboard');
     return `
       ${sidebar}
-      <div class="ml-56 flex flex-col min-h-screen bg-gray-50">
+      <div class="main-content md:ml-56 flex flex-col min-h-screen bg-gray-50">
         <!-- Header -->
-        <header class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between sticky top-0 z-20">
-          <div class="flex-1 max-w-md">
-            <div class="relative">
-              <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-              <input type="text" placeholder="Search anything..." class="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+        <header class="bg-white border-b border-gray-200 px-4 md:px-6 py-3 flex items-center justify-between sticky top-0 z-20">
+          <div class="flex items-center gap-3">
+            <button id="hamburgerBtn" onclick="SidebarView.openSidebar()" class="p-2 text-gray-600 hover:text-gray-800 md:hidden">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+            <div class="hidden sm:block flex-1 max-w-md">
+              <div class="relative">
+                <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                <input type="text" placeholder="Search anything..." class="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+              </div>
             </div>
           </div>
           <div class="flex items-center gap-4">
@@ -29,14 +34,14 @@ const EmployeeDashboardView = {
         </header>
 
         <!-- Main content -->
-        <main class="flex-1 p-6">
+        <main class="flex-1 p-4 md:p-6">
           <div class="mb-6">
             <h1 class="text-xl font-bold text-gray-800">Welcome back, ${user.name.split(' ')[0]}!</h1>
             <p class="text-gray-500 text-sm">Here's your readiness snapshot.</p>
           </div>
 
           <!-- Stats cards -->
-          <div class="grid grid-cols-4 gap-4 mb-6">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
             <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
               <p class="text-xs text-gray-500 mb-1">Profile Completeness <span class="text-blue-500">*</span></p>
               <p class="text-2xl font-bold text-gray-800">${stats.profileCompleteness}%</p>
@@ -60,7 +65,7 @@ const EmployeeDashboardView = {
           </div>
 
           <!-- Bottom section -->
-          <div class="grid grid-cols-2 gap-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Readiness Overview -->
             <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
               <h3 class="font-semibold text-gray-800 mb-4">Readiness Overview</h3>

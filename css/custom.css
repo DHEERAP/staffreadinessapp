@@ -9,3 +9,19 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans
 .tab-content.hidden { display: none; }
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button { opacity: 1; }
+
+/* Mobile sidebar overlay */
+#sidebarOverlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 25; }
+#sidebarOverlay.active { display: block; }
+
+/* Sidebar mobile: hidden by default, slides in */
+@media (max-width: 767px) {
+  aside.sidebar { transform: translateX(-100%); transition: transform 0.25s ease; }
+  aside.sidebar.open { transform: translateX(0); }
+  .main-content { margin-left: 0 !important; }
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+@media (min-width: 768px) {
+  aside.sidebar { transform: translateX(0) !important; }
+  #hamburgerBtn { display: none !important; }
+}

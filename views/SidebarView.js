@@ -32,7 +32,7 @@ const SidebarView = {
     const navHTML = navItems.map(item => {
       const isActive = activeRoute === item.route;
       return `
-        <a href="#${item.route}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all cursor-pointer
+        <a href="#${item.route}" onclick="SidebarView.closeSidebar()" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all cursor-pointer
           ${isActive ? 'bg-blue-700 text-white font-medium' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}">
           <span class="text-base w-5 text-center">${item.icon}</span>
           <span>${item.label}</span>
@@ -40,7 +40,8 @@ const SidebarView = {
     }).join('');
 
     return `
-      <aside class="w-56 bg-gray-900 min-h-screen flex flex-col fixed left-0 top-0 z-30">
+      <div id="sidebarOverlay" onclick="SidebarView.closeSidebar()"></div>
+      <aside class="sidebar w-56 bg-gray-900 min-h-screen flex flex-col fixed left-0 top-0 z-30">
         <!-- Logo -->
         <div class="flex items-center gap-2 px-4 py-5 border-b border-gray-700">
           <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
@@ -68,5 +69,19 @@ const SidebarView = {
           </button>
         </div>
       </aside>`;
+  },
+
+  closeSidebar() {
+    const sidebar = document.querySelector('aside.sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    if (sidebar) sidebar.classList.remove('open');
+    if (overlay) overlay.classList.remove('active');
+  },
+
+  openSidebar() {
+    const sidebar = document.querySelector('aside.sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    if (sidebar) sidebar.classList.add('open');
+    if (overlay) overlay.classList.add('active');
   }
 };

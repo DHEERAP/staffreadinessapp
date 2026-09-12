@@ -4,17 +4,22 @@ const MatchingResultsView = {
     const sidebar = SidebarView.render(user, '/matching');
     return `
       ${sidebar}
-      <div class="ml-56 flex flex-col min-h-screen bg-gray-50">
-        <header class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between sticky top-0 z-20">
-          <div class="text-sm">${Helpers.getBreadcrumb(['Dashboard', 'Staffing Requirements', 'Java Backend Developer', 'Matches'])}</div>
+      <div class="main-content md:ml-56 flex flex-col min-h-screen bg-gray-50">
+        <header class="bg-white border-b border-gray-200 px-4 md:px-6 py-3 flex items-center justify-between sticky top-0 z-20">
+          <div class="flex items-center gap-3">
+            <button id="hamburgerBtn" onclick="SidebarView.openSidebar()" class="p-2 text-gray-600 hover:text-gray-800 md:hidden">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+            <div class="hidden sm:block text-sm">${Helpers.getBreadcrumb(['Dashboard', 'Staffing Requirements', 'Java Backend Developer', 'Matches'])}</div>
+          </div>
           <div class="flex items-center gap-2">
             <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold">${user.avatar}</div>
             <div><p class="text-sm font-medium text-gray-800">Hello, ${user.name.split(' ')[0]}</p><p class="text-xs text-gray-500">${user.designation}</p></div>
           </div>
         </header>
-        <main class="flex-1 p-6">
+        <main class="flex-1 p-4 md:p-6">
           <!-- Stats -->
-          <div class="grid grid-cols-4 gap-4 mb-6">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
             ${[['Candidates Evaluated', stats.candidatesEvaluated, 'text-gray-800'], ['Eligible Candidates', stats.eligibleCandidates, 'text-gray-800'], ['Interested Employees', stats.interestedEmployees, 'text-gray-800'], [`Shortlisted`, `${stats.shortlisted}/${stats.totalRequired}`, stats.shortlisted > 0 ? 'text-green-600' : 'text-gray-800']].map(([label, val, cls]) => `
               <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
                 <p class="text-xs text-gray-500 mb-1">${label}</p>
@@ -42,6 +47,7 @@ const MatchingResultsView = {
 
           <!-- Table -->
           <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="table-scroll">
             <table class="w-full text-sm">
               <thead class="bg-gray-50 border-b border-gray-200">
                 <tr>
@@ -52,6 +58,7 @@ const MatchingResultsView = {
                 ${results.map(r => this.renderRow(r)).join('')}
               </tbody>
             </table>
+            </div>
           </div>
 
           <!-- Bottom actions -->

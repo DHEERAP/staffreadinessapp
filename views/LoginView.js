@@ -2,10 +2,10 @@
 const LoginView = {
   render() {
     return `
-      <div class="min-h-screen flex items-center justify-center bg-gray-50">
-        <div class="flex w-full max-w-3xl shadow-2xl rounded-2xl overflow-hidden">
+      <div class="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+        <div class="flex flex-col sm:flex-row w-full max-w-3xl shadow-2xl rounded-2xl overflow-hidden">
           <!-- Left blue panel -->
-          <div class="w-2/5 bg-gradient-to-br from-blue-700 to-blue-900 p-10 flex flex-col justify-between">
+          <div class="sm:w-2/5 bg-gradient-to-br from-blue-700 to-blue-900 p-8 sm:p-10 flex flex-col justify-between">
             <div>
               <div class="flex items-center gap-2 mb-8">
                 <div class="w-10 h-10 bg-white bg-opacity-20 rounded-xl flex items-center justify-center">
@@ -20,7 +20,7 @@ const LoginView = {
             <div class="text-blue-200 text-xs">MVP v1.0 &copy; 2026</div>
           </div>
           <!-- Right form panel -->
-          <div class="w-3/5 bg-white p-10 flex flex-col justify-center">
+          <div class="sm:w-3/5 bg-white p-8 sm:p-10 flex flex-col justify-center">
             <h2 class="text-2xl font-bold text-gray-800 mb-1">Welcome Back</h2>
             <p class="text-gray-500 text-sm mb-7">Sign in to continue</p>
             <form id="loginForm" novalidate>

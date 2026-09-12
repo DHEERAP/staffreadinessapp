@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Staffing Readiness Platform</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/custom.css"/>
+</head>
+<body class="bg-gray-50">
+
+  <!-- App Root -->
+  <div id="app">
+    <!-- Content rendered here by JavaScript -->
+    <div class="min-h-screen flex items-center justify-center">
+      <div class="text-center">
+        <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mx-auto mb-3"></div>
+        <p class="text-gray-500 text-sm">Loading Staffing Readiness Platform...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== DATA FILES ===================== -->
+  <script src="data/users.js"></script>
+  <script src="data/opportunities.js"></script>
+  <script src="data/employees.js"></script>
+  <script src="data/correctionRequests.js"></script>
+  <script src="data/staffingRequirements.js"></script>
+
+  <!-- ===================== UTILS ===================== -->
+  <script src="utils/storage.js"></script>
+  <script src="utils/helpers.js"></script>
+  <script src="utils/router.js"></script>
+
+  <!-- ===================== MODELS ===================== -->
+  <script src="models/AuthModel.js"></script>
+  <script src="models/OpportunityModel.js"></script>
+  <script src="models/EmployeeModel.js"></script>
+  <script src="models/StaffingModel.js"></script>
+  <script src="models/CorrectionModel.js"></script>
+
+  <!-- ===================== VIEWS ===================== -->
+  <script src="views/SidebarView.js"></script>
+  <script src="views/LoginView.js"></script>
+  <script src="views/EmployeeDashboardView.js"></script>
+  <script src="views/OpportunitiesView.js"></script>
+  <script src="views/OpportunityDetailView.js"></script>
+  <script src="views/CreateStaffingView.js"></script>
+  <script src="views/MatchingResultsView.js"></script>
+  <script src="views/ApproveShortlistView.js"></script>
+  <script src="views/CorrectionRequestsView.js"></script>
+  <script src="views/InterestDashboardView.js"></script>
+
+  <!-- ===================== CONTROLLERS ===================== -->
+  <script src="controllers/AuthController.js"></script>
+  <script src="controllers/OpportunityController.js"></script>
+  <script src="controllers/StaffingController.js"></script>
+  <script src="controllers/CorrectionController.js"></script>
+  <script src="controllers/AppController.js"></script>
+
+  <!-- ===================== INIT ===================== -->
+  <script>
+    // Start the application
+    document.addEventListener('DOMContentLoaded', () => {
+      AppController.init();
+    });
+  </script>
+</body>
+</html>

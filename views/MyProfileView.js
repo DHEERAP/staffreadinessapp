@@ -4,7 +4,8 @@ const MyProfileView = {
     const sidebar = SidebarView.render(user, '/profile');
     const emp = EMPLOYEES.find(e => e.id === user.id) || {};
     const skills = emp.skills || ['Java', 'Spring Boot', 'REST APIs', 'Microservices'];
-    const verifiedSkills = emp.verifiedSkills || ['Java', 'Spring Boot'];
+    // const verifiedSkills = emp.verifiedSkills || ['Java', 'Spring Boot'];
+    const verifiedSkillNames = ['Java', 'Spring Boot'];
     const certs = emp.certifications || ['AWS Cloud Practitioner', 'Oracle Java SE 11'];
     const completeness = emp.profileCompleteness || 85;
 
@@ -45,8 +46,8 @@ const MyProfileView = {
               <h3 class="font-semibold text-gray-800 mb-4">Skills</h3>
               <div class="flex flex-wrap gap-2 mb-3">
                 ${skills.map(s => `
-                  <span class="px-3 py-1 rounded-full text-xs font-medium ${verifiedSkills.includes(s) ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}">
-                    ${s} ${verifiedSkills.includes(s) ? '✓' : '(Self-declared)'}
+                  <span class="px-3 py-1 rounded-full text-xs font-medium ${verifiedSkillNames.includes(s) ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}">
+                    ${s} ${verifiedSkillNames.includes(s) ? '✓' : '(Self-declared)'}
                   </span>`).join('')}
               </div>
               <p class="text-xs text-gray-400">✓ = Verified &nbsp; Others = Self-declared</p>

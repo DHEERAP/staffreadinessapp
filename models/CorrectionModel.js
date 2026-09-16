@@ -1,8 +1,38 @@
 // models/CorrectionModel.js
 const CorrectionModel = {
-  getAll() { return Storage.get('correctionReqs') || CORRECTION_REQUESTS; },
+  getAll() {
+    let reqs = Storage.get('correctionReqs');
+    if (!reqs) {
+      reqs = JSON.parse(JSON.stringify(CORRECTION_REQUESTS));
+      Storage.set('correctionReqs', reqs);
+    }
+    return reqs;
+  },
   getByTab(tab) { return this.getAll().filter(r => r.tab === tab); },
   getById(id) { return this.getAll().find(r => r.id === id) || null; },
+  getByEmployee(user) {
+    return this.getAll().filter(r => r.employeeId === user.id || r.employeeName === user.name);
+  },
+  create(data) {
+    const reqs = this.getAll();
+    const newReq = {
+      id: 'CR-' + String(1000 + reqs.length + 1),
+      employeeId: data.employeeId,
+      employeeName: data.employeeName,
+      type: data.type,
+      description: data.description,
+      message: data.message,
+      evidence: data.evidence || '',
+      submittedOn: new Date().toLocaleDateString(),
+      slaStatus: '5 Days Left',
+      slaColor: 'green',
+      status: 'New',
+      tab: 'new'
+    };
+    reqs.push(newReq);
+    Storage.set('correctionReqs', reqs);
+    return { success: true, data: newReq };
+  },
   updateStatus(id, status, tab) {
     const reqs = this.getAll();
     const idx = reqs.findIndex(r => r.id === id);

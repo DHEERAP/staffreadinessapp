@@ -2,11 +2,12 @@
 const HrbpDashboardView = {
   render(user) {
     const sidebar = SidebarView.render(user, '/dashboard');
-    const newRequests = CORRECTION_REQUESTS.filter(r => r.tab === 'new').length;
-    const underReview = CORRECTION_REQUESTS.filter(r => r.tab === 'under_review').length;
-    const appeals = CORRECTION_REQUESTS.filter(r => r.tab === 'appeals').length;
-    const overdue = CORRECTION_REQUESTS.filter(r => r.slaStatus === 'Overdue').length;
-    const recentRequests = CORRECTION_REQUESTS.filter(r => r.tab === 'new').slice(0, 3);
+    const allCr = CorrectionModel.getAll();
+    const newRequests = allCr.filter(r => r.tab === 'new').length;
+    const underReview = allCr.filter(r => r.tab === 'under_review').length;
+    const appeals = allCr.filter(r => r.tab === 'appeals').length;
+    const overdue = allCr.filter(r => r.slaStatus === 'Overdue').length;
+    const recentRequests = allCr.filter(r => r.tab === 'new').slice(0, 3);
 
     return `
       ${sidebar}
@@ -24,10 +25,6 @@ const HrbpDashboardView = {
             </div>
           </div>
           <div class="flex items-center gap-4">
-            <button class="relative p-2 text-gray-500 hover:text-gray-700">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-              ${overdue > 0 ? `<span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>` : ''}
-            </button>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold">${user.avatar}</div>
               <div class="text-right">
@@ -46,22 +43,22 @@ const HrbpDashboardView = {
 
           <!-- Stats -->
           <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
-            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 cursor-pointer hover:border-blue-300" onclick="Router.navigate('/corrections')">
               <p class="text-xs text-gray-500 mb-1">New Requests</p>
               <p class="text-2xl font-bold text-gray-800">${newRequests}</p>
               <p class="text-xs text-blue-600 mt-1">Awaiting review</p>
             </div>
-            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 cursor-pointer hover:border-blue-300" onclick="Router.navigate('/corrections')">
               <p class="text-xs text-gray-500 mb-1">Under Review</p>
               <p class="text-2xl font-bold text-orange-500">${underReview}</p>
               <p class="text-xs text-orange-500 mt-1">In progress</p>
             </div>
-            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 cursor-pointer hover:border-blue-300" onclick="Router.navigate('/corrections')">
               <p class="text-xs text-gray-500 mb-1">Appeals</p>
               <p class="text-2xl font-bold text-purple-600">${appeals}</p>
               <p class="text-xs text-purple-600 mt-1">Needs decision</p>
             </div>
-            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 cursor-pointer hover:border-blue-300" onclick="Router.navigate('/corrections')">
               <p class="text-xs text-gray-500 mb-1">SLA Overdue</p>
               <p class="text-2xl font-bold text-red-600">${overdue}</p>
               <p class="text-xs text-red-600 mt-1">Urgent action needed</p>

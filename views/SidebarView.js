@@ -1,39 +1,37 @@
 // views/SidebarView.js
 const SidebarView = {
-  // Sidebar nav items per role
   getNavItems(role) {
     const shared = [
-      { icon: '🔔', label: 'Notifications', route: '/notifications' },
-      { icon: '❓', label: 'Help & Support', route: '/help' }
+      { icon: 'help', label: 'Help & Support', route: '/help' }
     ];
     const navMap = {
       employee: [
-        { icon: '⊞', label: 'Dashboard', route: '/dashboard' },
-        { icon: '👤', label: 'My Profile', route: '/profile' },
-        { icon: '💼', label: 'Opportunities', route: '/opportunities' },
-        { icon: '♡', label: 'My Interests', route: '/interests' },
-        { icon: '📋', label: 'My Applications', route: '/applications' },
-        { icon: '✏️', label: 'Correction Requests', route: '/corrections' },
+        { icon: 'dashboard', label: 'Dashboard', route: '/dashboard' },
+        { icon: 'profile', label: 'My Profile', route: '/profile' },
+        { icon: 'briefcase', label: 'Opportunities', route: '/opportunities' },
+        { icon: 'heart', label: 'My Interests', route: '/interests' },
+        { icon: 'clipboard', label: 'My Applications', route: '/applications' },
+        { icon: 'pencil', label: 'Correction Requests', route: '/corrections' },
         ...shared
       ],
       rmg: [
-        { icon: '⊞', label: 'Dashboard', route: '/dashboard' },
-        { icon: '📁', label: 'Staffing Requirements', route: '/opportunities' },
-        { icon: '📊', label: 'Matching Results', route: '/matching' },
-        { icon: '📈', label: 'Interest Dashboard', route: '/interest-dashboard' },
+        { icon: 'dashboard', label: 'Dashboard', route: '/dashboard' },
+        { icon: 'folder', label: 'Staffing Requirements', route: '/opportunities' },
+        { icon: 'chart', label: 'Matching Results', route: '/matching' },
+        { icon: 'chart', label: 'Interest Dashboard', route: '/interest-dashboard' },
         ...shared
       ],
       project_head: [
-        { icon: '⊞', label: 'Dashboard', route: '/dashboard' },
-        { icon: '📁', label: 'Staffing Requirements', route: '/opportunities' },
-        { icon: '➕', label: 'Create Requirement', route: '/create-staffing' },
-        { icon: '✅', label: 'Approve Shortlist', route: '/approve-shortlist' },
+        { icon: 'dashboard', label: 'Dashboard', route: '/dashboard' },
+        { icon: 'folder', label: 'Staffing Requirements', route: '/opportunities' },
+        { icon: 'plus', label: 'Create Requirement', route: '/create-staffing' },
+        { icon: 'check', label: 'Approve Shortlist', route: '/approve-shortlist' },
         ...shared
       ],
       hrbp: [
-        { icon: '⊞', label: 'Dashboard', route: '/dashboard' },
-        { icon: '✏️', label: 'Correction Requests', route: '/corrections' },
-        { icon: '📊', label: 'Reports', route: '/reports' },
+        { icon: 'dashboard', label: 'Dashboard', route: '/dashboard' },
+        { icon: 'pencil', label: 'Correction Requests', route: '/corrections' },
+        { icon: 'chart', label: 'Reports', route: '/reports' },
         ...shared
       ]
     };
@@ -47,7 +45,7 @@ const SidebarView = {
       return `
         <a href="#${item.route}" onclick="SidebarView.closeSidebar()" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all cursor-pointer
           ${isActive ? 'bg-blue-700 text-white font-medium' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}">
-          <span class="text-base w-5 text-center">${item.icon}</span>
+          ${Helpers.navIcon(item.icon)}
           <span>${item.label}</span>
         </a>`;
     }).join('');
@@ -55,7 +53,6 @@ const SidebarView = {
     return `
       <div id="sidebarOverlay" onclick="SidebarView.closeSidebar()"></div>
       <aside class="sidebar w-56 bg-gray-900 min-h-screen flex flex-col fixed left-0 top-0 z-30">
-        <!-- Logo -->
         <div class="flex items-center gap-2 px-4 py-5 border-b border-gray-700">
           <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
             <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -64,11 +61,9 @@ const SidebarView = {
           </div>
           <span class="text-white font-semibold text-sm leading-tight">Staffing<br>Readiness</span>
         </div>
-        <!-- Nav -->
         <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
           ${navHTML}
         </nav>
-        <!-- User info at bottom -->
         <div class="px-4 py-4 border-t border-gray-700">
           <div class="flex items-center gap-2">
             <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold">${user.avatar}</div>
@@ -78,7 +73,7 @@ const SidebarView = {
             </div>
           </div>
           <button onclick="AuthController.logout()" class="mt-3 w-full text-left text-gray-400 hover:text-white text-xs flex items-center gap-2 transition-colors">
-            <span>⬅</span> Sign Out
+            ${Helpers.navIcon('logout')} Sign Out
           </button>
         </div>
       </aside>`;

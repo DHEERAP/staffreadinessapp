@@ -2,8 +2,9 @@
 const ProjectHeadDashboardView = {
   render(user) {
     const sidebar = SidebarView.render(user, '/dashboard');
-    const myReqs = STAFFING_REQUIREMENTS.filter(r => r.createdBy === user.employeeId);
-    const pendingApproval = SHORTLIST_FOR_APPROVAL.filter(s => s.status === 'Pending Approval').length;
+    const myReqs = StaffingModel.getAll().filter(r => r.createdBy === user.employeeId);
+    const pendingList = StaffingModel.getPendingShortlists();
+    const pendingApproval = pendingList.length;
     const totalOpenings = myReqs.reduce((s, r) => s + r.noOfResources, 0);
     const approved = myReqs.filter(r => r.status === 'Approved').length;
 
@@ -20,10 +21,6 @@ const ProjectHeadDashboardView = {
             </nav>
           </div>
           <div class="flex items-center gap-4">
-            <button class="relative p-2 text-gray-500 hover:text-gray-700">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-              <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-            </button>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold">${user.avatar}</div>
               <div class="text-right">
@@ -45,22 +42,22 @@ const ProjectHeadDashboardView = {
 
           <!-- Stats -->
           <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
-            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 cursor-pointer hover:border-blue-300" onclick="Router.navigate('/opportunities')">
               <p class="text-xs text-gray-500 mb-1">My Requirements</p>
               <p class="text-2xl font-bold text-gray-800">${myReqs.length}</p>
               <p class="text-xs text-blue-600 mt-1">Total raised</p>
             </div>
-            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 cursor-pointer hover:border-blue-300" onclick="Router.navigate('/opportunities')">
               <p class="text-xs text-gray-500 mb-1">Total Openings</p>
               <p class="text-2xl font-bold text-gray-800">${totalOpenings}</p>
               <p class="text-xs text-gray-500 mt-1">Across projects</p>
             </div>
-            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 cursor-pointer hover:border-orange-300" onclick="Router.navigate('/approve-shortlist')">
               <p class="text-xs text-gray-500 mb-1">Pending Approval</p>
               <p class="text-2xl font-bold text-orange-500">${pendingApproval}</p>
               <p class="text-xs text-orange-500 mt-1">Awaiting review</p>
             </div>
-            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 cursor-pointer hover:border-green-300" onclick="Router.navigate('/opportunities')">
               <p class="text-xs text-gray-500 mb-1">Approved</p>
               <p class="text-2xl font-bold text-green-600">${approved}</p>
               <p class="text-xs text-green-600 mt-1">Fulfilled</p>
@@ -76,16 +73,16 @@ const ProjectHeadDashboardView = {
               </div>
               <div class="space-y-3">
                 ${myReqs.map(r => `
-                  <div class="p-3 rounded-lg bg-gray-50 border border-gray-100">
+                  <div class="p-3 rounded-lg bg-gray-50 border border-gray-100 cursor-pointer hover:bg-gray-100" onclick="StaffingController.showStaffingDetail('${r.id}')">
                     <div class="flex items-center justify-between mb-1">
                       <p class="text-sm font-medium text-gray-800">${r.requiredRole}</p>
                       <span class="text-xs px-2 py-0.5 rounded-full font-medium ${r.status === 'Approved' ? 'bg-green-100 text-green-700' : r.status === 'Draft' ? 'bg-gray-100 text-gray-600' : 'bg-orange-100 text-orange-700'}">${r.status}</span>
                     </div>
                     <p class="text-xs text-gray-500">${r.projectName}</p>
                     <div class="flex items-center gap-3 mt-2 text-xs text-gray-500">
-                      <span>👥 ${r.noOfResources} openings</span>
-                      <span>📅 ${r.startDate}</span>
-                      <span>📍 ${r.location}</span>
+                      <span>${r.noOfResources} openings</span>
+                      <span>${r.startDate}</span>
+                      <span>${r.location}</span>
                     </div>
                   </div>`).join('')}
               </div>
@@ -97,8 +94,8 @@ const ProjectHeadDashboardView = {
                 <h3 class="font-semibold text-gray-800">Pending Approvals</h3>
                 <a href="#/approve-shortlist" class="text-blue-600 text-xs hover:underline">Review All</a>
               </div>
-              ${SHORTLIST_FOR_APPROVAL.length === 0 ? `<p class="text-sm text-gray-400 text-center py-6">No pending approvals</p>` :
-                SHORTLIST_FOR_APPROVAL.map(s => `
+              ${pendingList.length === 0 ? `<p class="text-sm text-gray-400 text-center py-6">No pending approvals</p>` :
+                pendingList.map(s => `
                   <div class="p-3 rounded-lg bg-orange-50 border border-orange-100 mb-3">
                     <div class="flex items-center justify-between mb-1">
                       <p class="text-sm font-medium text-gray-800">${s.requirement}</p>
@@ -106,7 +103,7 @@ const ProjectHeadDashboardView = {
                     </div>
                     <p class="text-xs text-gray-500">${s.project} · ${s.openings} openings</p>
                     <p class="text-xs text-gray-500 mt-1">${s.candidates.length} candidates shortlisted by RMG</p>
-                    <button onclick="Router.navigate('/approve-shortlist')" class="mt-2 text-xs text-blue-600 hover:underline font-medium">Review Shortlist →</button>
+                    <button onclick="Router.navigate('/approve-shortlist')" class="mt-2 text-xs text-blue-600 hover:underline font-medium">Review Shortlist</button>
                   </div>`).join('')}
             </div>
           </div>

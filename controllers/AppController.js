@@ -32,28 +32,6 @@ const AppController = {
     LoginView.bindEvents();
   },
 
-  // Show a simple placeholder page for routes not yet built
-  showPlaceholder(title) {
-    const user = AuthModel.getCurrentUser();
-    if (!user) { Router.navigate('/login'); return; }
-    const sidebar = SidebarView.render(user, '');
-    this.render(`
-      ${sidebar}
-      <div class="ml-56 flex flex-col min-h-screen bg-gray-50">
-        <div class="flex items-center justify-center flex-1">
-          <div class="text-center">
-            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-            </div>
-            <h2 class="text-xl font-bold text-gray-800 mb-2">${title}</h2>
-            <p class="text-gray-500 text-sm">This page is coming soon.</p>
-            <button onclick="Router.navigate('/dashboard')" class="mt-4 px-5 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition">← Back to Dashboard</button>
-          </div>
-        </div>
-      </div>`);
-  },
-
-  // Register all routes
   registerRoutes() {
     Router.register('/login', () => this.showLogin());
     Router.register('/dashboard', () => this.showDashboard());
@@ -63,12 +41,11 @@ const AppController = {
     Router.register('/approve-shortlist', () => ApprovalController.showApproveShortlist());
     Router.register('/corrections', () => CorrectionController.showCorrectionRequests());
     Router.register('/interest-dashboard', () => InterestController.showInterestDashboard());
-    Router.register('/profile', () => { const u = AuthModel.getCurrentUser(); if (!u) { Router.navigate('/login'); return; } this.render(MyProfileView.render(u)); });
+    Router.register('/profile', () => { const u = AuthModel.getCurrentUser(); if (!u) { Router.navigate('/login'); return; } this.render(MyProfileView.render(u)); MyProfileView.bindEvents(); });
     Router.register('/interests', () => { const u = AuthModel.getCurrentUser(); if (!u) { Router.navigate('/login'); return; } this.render(MyInterestsView.render(u)); });
     Router.register('/applications', () => { const u = AuthModel.getCurrentUser(); if (!u) { Router.navigate('/login'); return; } this.render(MyApplicationsView.render(u)); });
     Router.register('/reports', () => { const u = AuthModel.getCurrentUser(); if (!u) { Router.navigate('/login'); return; } this.render(ReportsView.render(u)); });
-    Router.register('/help', () => { const u = AuthModel.getCurrentUser(); if (!u) { Router.navigate('/login'); return; } this.render(HelpView.render(u)); });
-    Router.register('/notifications', () => this.showPlaceholder('Notifications'));
+    Router.register('/help', () => { const u = AuthModel.getCurrentUser(); if (!u) { Router.navigate('/login'); return; } this.render(HelpView.render(u)); HelpView.bindEvents(); });
   },
 
   // Initialize the app

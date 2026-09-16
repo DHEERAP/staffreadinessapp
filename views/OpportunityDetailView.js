@@ -27,10 +27,10 @@ const OpportunityDetailView = {
               <h1 class="text-xl font-bold text-gray-800">${opp.title}</h1>
               <p class="text-gray-500 text-sm">${opp.project}</p>
               <div class="flex items-center gap-4 mt-2 text-xs text-gray-500">
-                <span>📍 ${opp.location}</span>
-                <span>👥 ${opp.openings} Openings</span>
-                <span>⏱ ${opp.experience}</span>
-                <span>📅 Start: ${opp.startDate}</span>
+                <span>${opp.location}</span>
+                <span>${opp.openings} Openings</span>
+                <span>${opp.experience}</span>
+                <span>Start: ${opp.startDate}</span>
               </div>
             </div>
             ${Helpers.getSuitabilityBadge(opp.suitability)}
@@ -90,7 +90,7 @@ const OpportunityDetailView = {
                 </div>
                 <div class="mt-4">
                   <p class="text-sm font-semibold text-gray-700 mb-2">Why is this recommended?</p>
-                  <ul class="space-y-1">${opp.whyRecommended.map(r => `<li class="flex items-start gap-2 text-xs text-gray-600"><span class="text-green-500 mt-0.5">✓</span>${r}</li>`).join('')}</ul>
+                  <ul class="space-y-1">${opp.whyRecommended.map(r => `<li class="flex items-start gap-2 text-xs text-gray-600"><span class="text-green-600 mt-0.5 font-bold">+</span>${r}</li>`).join('')}</ul>
                 </div>
               </div>
               <!-- Right: Breakdown -->
@@ -124,8 +124,8 @@ const OpportunityDetailView = {
 
           <!-- Action buttons -->
           <div class="flex justify-end gap-3 mt-6">
-            <button onclick="OpportunityController.saveOpportunity(${opp.id})" class="px-5 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition">Save Opportunity</button>
-            <button onclick="OpportunityController.expressInterest(${opp.id})" class="px-5 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition">Express Interest</button>
+            ${user.role === 'employee' ? `<button onclick="OpportunityController.saveOpportunity(${opp.id})" class="px-5 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition">Save Opportunity</button>
+            <button onclick="OpportunityController.expressInterest(${opp.id})" class="px-5 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition">Express Interest</button>` : ''}
           </div>
         </main>
       </div>`;

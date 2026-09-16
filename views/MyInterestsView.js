@@ -53,7 +53,7 @@ const MyInterestsView = {
                   <div>
                     <h3 class="font-semibold text-gray-800">${i.role}</h3>
                     <p class="text-sm text-gray-500">${i.project}</p>
-                    <p class="text-xs text-gray-400 mt-1">📍 ${i.location} · Expressed on ${i.expressedOn}</p>
+                    <p class="text-xs text-gray-400 mt-1">${i.location} · Expressed on ${i.expressedOn}</p>
                   </div>
                   <div class="text-right">
                     <p class="${scoreColor(i.matchScore)} text-lg font-bold">${i.matchScore}%</p>

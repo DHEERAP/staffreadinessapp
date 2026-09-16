@@ -3,6 +3,10 @@ const OpportunityController = {
   showOpportunities() {
     const user = AuthModel.getCurrentUser();
     if (!user) { Router.navigate('/login'); return; }
+    if (user.role === 'rmg' || user.role === 'project_head') {
+      StaffingController.showStaffingList();
+      return;
+    }
     const opportunities = OpportunityModel.getAll();
     AppController.render(OpportunitiesView.render(user, opportunities));
     this.bindFilters(user);

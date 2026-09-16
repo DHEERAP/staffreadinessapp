@@ -2,7 +2,7 @@
 const RmgDashboardView = {
   render(user) {
     const sidebar = SidebarView.render(user, '/dashboard');
-    const reqs = STAFFING_REQUIREMENTS;
+    const reqs = StaffingModel.getAll();
     const totalReqs = reqs.length;
     const activeReqs = reqs.filter(r => r.status === 'Submitted to RMG').length;
     const approvedReqs = reqs.filter(r => r.status === 'Approved').length;
@@ -24,10 +24,6 @@ const RmgDashboardView = {
             </div>
           </div>
           <div class="flex items-center gap-4">
-            <button class="relative p-2 text-gray-500 hover:text-gray-700">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-              <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-            </button>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold">${user.avatar}</div>
               <div class="text-right">
@@ -46,22 +42,22 @@ const RmgDashboardView = {
 
           <!-- Stats -->
           <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
-            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 cursor-pointer hover:border-blue-300" onclick="Router.navigate('/opportunities')">
               <p class="text-xs text-gray-500 mb-1">Total Requirements</p>
               <p class="text-2xl font-bold text-gray-800">${totalReqs}</p>
               <p class="text-xs text-blue-600 mt-1">All active</p>
             </div>
-            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 cursor-pointer hover:border-orange-300" onclick="Router.navigate('/opportunities')">
               <p class="text-xs text-gray-500 mb-1">Pending Review</p>
               <p class="text-2xl font-bold text-orange-500">${activeReqs}</p>
               <p class="text-xs text-orange-500 mt-1">Needs attention</p>
             </div>
-            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 cursor-pointer hover:border-green-300" onclick="Router.navigate('/opportunities')">
               <p class="text-xs text-gray-500 mb-1">Approved</p>
               <p class="text-2xl font-bold text-green-600">${approvedReqs}</p>
               <p class="text-xs text-green-600 mt-1">Completed</p>
             </div>
-            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 cursor-pointer hover:border-blue-300" onclick="Router.navigate('/matching')">
               <p class="text-xs text-gray-500 mb-1">Candidates Evaluated</p>
               <p class="text-2xl font-bold text-gray-800">${totalCandidatesEvaluated}</p>
               <p class="text-xs text-gray-500 mt-1">Across all reqs</p>
@@ -77,7 +73,7 @@ const RmgDashboardView = {
               </div>
               <div class="space-y-3">
                 ${reqs.map(r => `
-                  <div class="flex items-center justify-between p-3 rounded-lg bg-gray-50">
+                  <div class="flex items-center justify-between p-3 rounded-lg bg-gray-50 cursor-pointer hover:bg-gray-100" onclick="StaffingController.showStaffingDetail('${r.id}')">
                     <div>
                       <p class="text-sm font-medium text-gray-800">${r.requiredRole}</p>
                       <p class="text-xs text-gray-500">${r.projectName} · ${r.noOfResources} openings</p>
@@ -104,7 +100,7 @@ const RmgDashboardView = {
                 </thead>
                 <tbody class="divide-y divide-gray-50">
                   ${INTEREST_DASHBOARD.map(i => `
-                    <tr>
+                    <tr class="cursor-pointer hover:bg-gray-50" onclick="Router.navigate('/interest-dashboard')">
                       <td class="py-2 text-gray-800 font-medium">${i.opportunity}</td>
                       <td class="py-2 text-center text-gray-700">${i.totalInterested}</td>
                       <td class="py-2 text-center text-green-600 font-semibold">${i.highlySuitable}</td>

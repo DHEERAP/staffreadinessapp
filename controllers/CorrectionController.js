@@ -5,12 +5,18 @@ const CorrectionController = {
   showCorrectionRequests() {
     const user = AuthModel.getCurrentUser();
     if (!user) { Router.navigate('/login'); return; }
-    const requests = CorrectionModel.getByTab(this.activeTab);
+    const isEmployee = user.role === 'employee';
+    const requests = isEmployee ? CorrectionModel.getByEmployee(user) : CorrectionModel.getByTab(this.activeTab);
     AppController.render(CorrectionRequestsView.render(user, requests));
-    this.bindEvents();
+    this.bindEvents(user);
   },
 
-  bindEvents() {
+  bindEvents(user) {
+    if (user.role === 'employee') {
+      const form = document.getElementById('raiseCorrectionForm');
+      if (form) form.addEventListener('submit', (e) => { e.preventDefault(); this.submitEmployeeRequest(); });
+      return;
+    }
     const typeFilter = document.getElementById('crFilterType');
     const statusFilter = document.getElementById('crFilterStatus');
     const slaFilter = document.getElementById('crFilterSLA');
@@ -24,7 +30,7 @@ const CorrectionController = {
         slaStatus: slaFilter?.value
       });
       reqs = CorrectionModel.search(reqs, search?.value);
-      CorrectionRequestsView.updateTable(reqs);
+      CorrectionRequestsView.updateTable(reqs, false);
     };
 
     if (typeFilter) typeFilter.addEventListener('change', applyFilters);
@@ -33,26 +39,62 @@ const CorrectionController = {
     if (search) search.addEventListener('input', Helpers.debounce(applyFilters, 300));
   },
 
+  submitEmployeeRequest() {
+    const user = AuthModel.getCurrentUser();
+    const type = document.getElementById('crType')?.value;
+    const description = document.getElementById('crDescription')?.value.trim();
+    const message = document.getElementById('crMessage')?.value.trim();
+    const evidence = document.getElementById('crEvidence')?.value.trim();
+    if (!type || !description || !message) { Helpers.showToast('Please fill type, description and message.', 'error'); return; }
+    CorrectionModel.create({ employeeId: user.id, employeeName: user.name, type, description, message, evidence });
+    Helpers.showToast('Correction request submitted.', 'success');
+    this.showCorrectionRequests();
+  },
+
   switchTab(tab) {
     this.activeTab = tab;
     CorrectionRequestsView.switchTabUI(tab);
     const requests = CorrectionModel.getByTab(tab);
-    CorrectionRequestsView.updateTable(requests);
+    CorrectionRequestsView.updateTable(requests, false);
+  },
+
+  viewOwnRequest(id) {
+    const req = CorrectionModel.getById(id);
+    if (!req) return;
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+    modal.innerHTML = `
+      <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-xl">
+        <h3 class="font-bold text-gray-800 mb-3">Request ${req.id}</h3>
+        <div class="space-y-2 text-sm mb-4">
+          <p><span class="text-gray-500">Type:</span> <span class="font-medium">${req.type}</span></p>
+          <p><span class="text-gray-500">Description:</span> <span class="font-medium">${req.description}</span></p>
+          <p><span class="text-gray-500">Message:</span> <span class="font-medium">${req.message || '-'}</span></p>
+          <p><span class="text-gray-500">Evidence:</span> <span class="font-medium">${req.evidence || '-'}</span></p>
+          <p><span class="text-gray-500">Status:</span> <span class="font-medium">${req.status}</span></p>
+        </div>
+        <div class="flex justify-end">
+          <button onclick="this.closest('.fixed').remove()" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">Close</button>
+        </div>
+      </div>`;
+    document.body.appendChild(modal);
   },
 
   reviewRequest(id) {
     const req = CorrectionModel.getById(id);
     if (!req) return;
-    // Show a simple modal
     const modal = document.createElement('div');
     modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
     modal.innerHTML = `
-      <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-xl">
+      <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-xl max-h-[90vh] overflow-y-auto">
         <h3 class="font-bold text-gray-800 mb-3">Review Request: ${req.id}</h3>
         <div class="space-y-2 text-sm mb-4">
           <p><span class="text-gray-500">Employee:</span> <span class="font-medium">${req.employeeName}</span></p>
           <p><span class="text-gray-500">Type:</span> <span class="font-medium">${req.type}</span></p>
           <p><span class="text-gray-500">Description:</span> <span class="font-medium">${req.description}</span></p>
+          <p><span class="text-gray-500">Message:</span> <span class="font-medium">${req.message || '-'}</span></p>
+          <p><span class="text-gray-500">Evidence:</span> <span class="font-medium">${req.evidence || '-'}</span></p>
+          <p><span class="text-gray-500">Status:</span> <span class="font-medium">${req.status}</span></p>
           <p><span class="text-gray-500">SLA Status:</span> <span class="font-medium ${Helpers.getSlaClass(req.slaStatus)}">${req.slaStatus}</span></p>
         </div>
         <div class="mb-4">

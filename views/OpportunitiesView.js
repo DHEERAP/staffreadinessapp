@@ -1,5 +1,38 @@
 // views/OpportunitiesView.js
 const OpportunitiesView = {
+  renderStaffing(user, reqs) {
+    const sidebar = SidebarView.render(user, '/opportunities');
+    return `
+      ${sidebar}
+      <div class="main-content md:ml-56 flex flex-col min-h-screen bg-gray-50">
+        ${this.renderHeader(user)}
+        <main class="flex-1 p-4 md:p-6">
+          <h1 class="text-lg font-bold text-gray-800 mb-1">Staffing Requirements</h1>
+          <p class="text-gray-500 text-xs mb-5">Project staffing needs submitted for matching</p>
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="table-scroll">
+            <table class="w-full text-sm">
+              <thead class="bg-gray-50 border-b border-gray-200">
+                <tr>${['Project Name','Role','Start Date','Number of Requirements','Status','Action'].map(h => `<th class="px-4 py-3 text-left text-xs font-semibold text-gray-600">${h}</th>`).join('')}</tr>
+              </thead>
+              <tbody>
+                ${reqs.map(r => `
+                  <tr class="border-b border-gray-100 hover:bg-gray-50">
+                    <td class="px-4 py-3 font-medium text-gray-800">${r.projectName}</td>
+                    <td class="px-4 py-3 text-gray-700">${r.requiredRole}</td>
+                    <td class="px-4 py-3 text-gray-600">${r.startDate}</td>
+                    <td class="px-4 py-3 text-gray-600">${r.noOfResources}</td>
+                    <td class="px-4 py-3">${Helpers.getStatusBadge(r.status)}</td>
+                    <td class="px-4 py-3"><button onclick="StaffingController.showStaffingDetail('${r.id}')" class="px-3 py-1.5 border border-gray-300 text-gray-600 rounded-lg text-xs hover:bg-gray-50">View Details</button></td>
+                  </tr>`).join('') || `<tr><td colspan="6" class="px-4 py-8 text-center text-gray-400">No staffing requirements.</td></tr>`}
+              </tbody>
+            </table>
+            </div>
+          </div>
+        </main>
+      </div>`;
+  },
+
   render(user, opportunities) {
     const sidebar = SidebarView.render(user, '/opportunities');
     const cards = opportunities.length > 0 ? opportunities.map(opp => this.renderCard(opp, user)).join('') : `<div class="col-span-full text-center py-16 text-gray-400"><p>No opportunities found.</p></div>`;
@@ -57,9 +90,9 @@ const OpportunitiesView = {
               <p class="font-semibold text-gray-800 text-sm">${opp.title}</p>
               <p class="text-xs text-gray-500">${opp.project}</p>
               <div class="flex flex-wrap items-center gap-2 mt-1 text-xs text-gray-400">
-                <span>📍 ${opp.location}</span>
-                <span>⏱ ${opp.experience}</span>
-                <span>📅 ${opp.startDate}</span>
+                <span>${opp.location}</span>
+                <span>${opp.experience}</span>
+                <span>${opp.startDate}</span>
               </div>
             </div>
           </div>
@@ -70,7 +103,7 @@ const OpportunitiesView = {
             </div>
             <div class="flex gap-2">
               <button onclick="OpportunityController.viewDetails(${opp.id})" class="px-3 py-1.5 border border-gray-300 text-gray-600 rounded-lg text-xs hover:bg-gray-50 transition">View Details</button>
-              <button onclick="OpportunityController.expressInterest(${opp.id})" class="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs hover:bg-blue-700 transition express-btn-${opp.id}">Express Interest</button>
+              ${user && user.role === 'employee' ? `<button onclick="OpportunityController.expressInterest(${opp.id})" class="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs hover:bg-blue-700 transition express-btn-${opp.id}">Express Interest</button>` : ''}
             </div>
           </div>
         </div>
@@ -92,7 +125,6 @@ const OpportunitiesView = {
           </div>
         </div>
         <div class="flex items-center gap-3">
-          <button class="relative p-2 text-gray-500"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
           <div class="flex items-center gap-2">
             <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold">${user.avatar}</div>
             <div class="hidden sm:block"><p class="text-sm font-medium text-gray-800">Hello, ${user.name.split(' ')[0]}</p><p class="text-xs text-gray-500">${user.designation}</p></div>

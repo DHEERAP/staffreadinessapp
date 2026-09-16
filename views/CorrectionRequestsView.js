@@ -77,12 +77,12 @@ const CorrectionRequestsView = {
     if (!requests.length) return `<tr><td colspan="6" class="px-4 py-8 text-center text-gray-400 text-sm">No requests found.</td></tr>`;
     return requests.map(r => `
       <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
-        <td class="px-4 py-3 font-medium text-blue-600">${r.id}</td>
-        <td class="px-4 py-3 text-gray-600">${r.type}</td>
-        <td class="px-4 py-3 text-gray-800">${r.description}</td>
-        <td class="px-4 py-3 text-gray-600">${r.submittedOn}</td>
-        <td class="px-4 py-3">${Helpers.getStatusBadge(r.status)}</td>
-        <td class="px-4 py-3">
+        <td class="px-4 py-3 font-medium text-blue-600" data-label="Request ID">${r.id}</td>
+        <td class="px-4 py-3 text-gray-600" data-label="Type">${r.type}</td>
+        <td class="px-4 py-3 text-gray-800" data-label="Description">${r.description}</td>
+        <td class="px-4 py-3 text-gray-600" data-label="Submitted On">${r.submittedOn}</td>
+        <td class="px-4 py-3" data-label="Status">${Helpers.getStatusBadge(r.status)}</td>
+        <td class="px-4 py-3" data-label="Action">
           <button onclick="CorrectionController.viewOwnRequest('${r.id}')" class="text-blue-500 hover:text-blue-700 transition" title="View">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
           </button>
@@ -168,13 +168,13 @@ const CorrectionRequestsView = {
     if (!requests.length) return `<tr><td colspan="7" class="px-4 py-8 text-center text-gray-400 text-sm">No requests found.</td></tr>`;
     return requests.map(r => `
       <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
-        <td class="px-4 py-3 font-medium text-blue-600">${r.id}</td>
-        <td class="px-4 py-3 text-gray-800">${r.employeeName}</td>
-        <td class="px-4 py-3 text-gray-600">${r.type}</td>
-        <td class="px-4 py-3 text-gray-600">${r.submittedOn}</td>
-        <td class="px-4 py-3 ${Helpers.getSlaClass(r.slaStatus)}">${r.slaStatus}</td>
-        <td class="px-4 py-3">${Helpers.getStatusBadge(r.status)}</td>
-        <td class="px-4 py-3">
+        <td class="px-4 py-3 font-medium text-blue-600" data-label="Request ID">${r.id}</td>
+        <td class="px-4 py-3 text-gray-800" data-label="Employee">${r.employeeName}</td>
+        <td class="px-4 py-3 text-gray-600" data-label="Type">${r.type}</td>
+        <td class="px-4 py-3 text-gray-600" data-label="Submitted On">${r.submittedOn}</td>
+        <td class="px-4 py-3 ${Helpers.getSlaClass(r.slaStatus)}" data-label="SLA">${r.slaStatus}</td>
+        <td class="px-4 py-3" data-label="Status">${Helpers.getStatusBadge(r.status)}</td>
+        <td class="px-4 py-3" data-label="Action">
           <button onclick="CorrectionController.reviewRequest('${r.id}')" class="text-blue-500 hover:text-blue-700 transition" title="Review">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
           </button>

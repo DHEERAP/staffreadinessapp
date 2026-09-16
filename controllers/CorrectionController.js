@@ -64,7 +64,7 @@ const CorrectionController = {
     const modal = document.createElement('div');
     modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
     modal.innerHTML = `
-      <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-xl">
+      <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-xl mobile-modal">
         <h3 class="font-bold text-gray-800 mb-3">Request ${req.id}</h3>
         <div class="space-y-2 text-sm mb-4">
           <p><span class="text-gray-500">Type:</span> <span class="font-medium">${req.type}</span></p>
@@ -86,7 +86,7 @@ const CorrectionController = {
     const modal = document.createElement('div');
     modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
     modal.innerHTML = `
-      <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-xl max-h-[90vh] overflow-y-auto">
+      <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-xl max-h-[90vh] overflow-y-auto mobile-modal">
         <h3 class="font-bold text-gray-800 mb-3">Review Request: ${req.id}</h3>
         <div class="space-y-2 text-sm mb-4">
           <p><span class="text-gray-500">Employee:</span> <span class="font-medium">${req.employeeName}</span></p>

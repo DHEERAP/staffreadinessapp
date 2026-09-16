@@ -25,3 +25,38 @@ input[type="number"]::-webkit-outer-spin-button { opacity: 1; }
   aside.sidebar { transform: translateX(0) !important; }
   #hamburgerBtn { display: none !important; }
 }
+
+/* --- mobile-friendly additions --- */
+@media (max-width: 639px) {
+  /* Convert wide tables to stacked cards */
+  .table-scroll table thead { display: none; }
+  .table-scroll table tbody tr { display: block; margin-bottom: 0.75rem; border: 1px solid #eef2f7; border-radius: 0.5rem; background: #fff; overflow: hidden; }
+  .table-scroll table tbody td { display: flex; justify-content: space-between; padding: 0.75rem 0.75rem; border-bottom: none; align-items: center; }
+  .table-scroll table tbody td[data-label]::before { content: attr(data-label); display: inline-block; color: #6b7280; font-size: 0.8rem; margin-right: 0.5rem; min-width: 40%; }
+  .table-scroll { -webkit-overflow-scrolling: touch; }
+
+  /* Hide less-important columns (Action / SLA) on very small screens */
+  .table-scroll table th:nth-child(6),
+  .table-scroll table td:nth-child(6),
+  .table-scroll table th:nth-child(5),
+  .table-scroll table td:nth-child(5) { display: none; }
+
+  /* Make modals full-screen on mobile */
+  .mobile-modal { width: 100%; height: 100vh; border-radius: 0; padding: 1rem; box-sizing: border-box; overflow-y: auto; }
+  .mobile-modal .modal-inner { max-width: 100%; height: 100%; }
+
+  /* Larger touch targets */
+  button, .btn, .px-4 { min-height: 44px; padding: 0.6rem 0.9rem; }
+
+  /* Sidebar behavior (ensure it covers full screen when open) */
+  #sidebarOverlay.active { display: block; }
+  aside.sidebar.open { position: fixed; z-index: 40; inset: 0 0 0 0; width: 85%; max-width: 320px; background: #0f172a; transform: translateX(0); box-shadow: 0 8px 24px rgba(15,23,42,0.08); }
+}
+
+/* Keep desktop/tablet as-is */
+@media (min-width: 640px) {
+  .mobile-modal { height: auto; max-width: 640px; border-radius: 0.75rem; }
+  .table-scroll table thead { display: table-header-group; }
+  .table-scroll table tbody tr { display: table-row; border: none; background: transparent; }
+  .table-scroll table tbody td { display: table-cell; padding: 0.75rem; }
+}

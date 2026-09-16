@@ -45,7 +45,12 @@ const HelpView = {
       ${sidebar}
       <div class="main-content md:ml-56 flex flex-col min-h-screen bg-gray-50">
         <header class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between sticky top-0 z-20">
-          <h2 class="text-base font-semibold text-gray-800">Help & Support</h2>
+          <div class="flex items-center gap-3">
+            <button id="hamburgerBtn" onclick="SidebarView.openSidebar()" class="p-2 text-gray-600 hover:text-gray-800 md:hidden">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+            <h2 class="text-base font-semibold text-gray-800">Help & Support</h2>
+          </div>
           <div class="flex items-center gap-2">
             <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold">${user.avatar}</div>
             <div>

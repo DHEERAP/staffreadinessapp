@@ -3,7 +3,7 @@ const ProjectHeadDashboardView = {
   render(user) {
     const sidebar = SidebarView.render(user, '/dashboard');
     const myReqs = StaffingModel.getAll().filter(r => r.createdBy === user.employeeId);
-    const pendingList = StaffingModel.getPendingShortlists();
+    const pendingList = StaffingModel.getProjectHeadShortlists(user.employeeId || user.employeeId);
     const pendingApproval = pendingList.length;
     const totalOpenings = myReqs.reduce((s, r) => s + r.noOfResources, 0);
     const approved = myReqs.filter(r => r.status === 'Approved').length;

@@ -1,6 +1,6 @@
 // views/MatchingResultsView.js
 const MatchingResultsView = {
-  render(user, stats, results, req, allReqs) {
+  render(user, stats, results, req, allReqs, selectedTech = 'all') {
     const sidebar = SidebarView.render(user, '/matching');
     const projects = [...new Set((allReqs || []).map(r => r.projectName))];
     const roles = [...new Set((allReqs || []).map(r => r.requiredRole))];
@@ -35,14 +35,16 @@ const MatchingResultsView = {
             <div class="flex items-center gap-3 flex-wrap">
               <span class="text-sm text-gray-500 font-medium">Filters:</span>
               <select id="filterProject" class="border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-gray-600 bg-white">
-                ${(allReqs || []).map(r => `<option value="${r.id}" ${req && r.id === req.id ? 'selected' : ''}>${r.projectName}</option>`).join('')}
+                <option value="all">All Projects</option>
+                ${projects.map(pn => `<option value="${pn}" ${req && req.projectName === pn ? 'selected' : ''}>${pn}</option>`).join('')}
               </select>
-              <select id="filterRoleMatch" class="border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-gray-600 bg-white">
-                <option value="all">Role</option>
-                ${roles.map(role => `<option value="${role}" ${req && req.requiredRole === role ? 'selected' : ''}>${role}</option>`).join('')}
+              <select id="filterTech" class="border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-gray-600 bg-white">
+                <option value="all">All TechStacks</option>
+                ${((req && req.skills) ? req.skills : [...new Set((allReqs||[]).flatMap(r => r.skills || []))]).map(s => `<option value="${s}" ${selectedTech === s ? 'selected' : ''}>${s}</option>`).join('')}
               </select>
               <button onclick="MatchingController.runAgain()" class="ml-auto px-4 py-1.5 border border-blue-600 text-blue-600 rounded-lg text-sm hover:bg-blue-50 font-medium">Run Again</button>
             </div>
+            <div class="mt-2 text-xs text-gray-500">Active requirement: ${req ? req.id + ' — ' + req.requiredRole : 'None'}</div>
           </div>
           <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             <div class="table-scroll">
@@ -59,7 +61,7 @@ const MatchingResultsView = {
             </div>
           </div>
           <div class="flex justify-end gap-3 mt-4">
-            <button onclick="MatchingController.addToShortlist()" class="px-5 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">Add to Shortlist</button>
+            <button onclick="MatchingController.addToShortlist(event)" class="px-5 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">Add to Shortlist</button>
             <button onclick="MatchingController.exportResults()" class="px-5 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm hover:bg-gray-50">Export</button>
           </div>
         </main>
@@ -81,7 +83,9 @@ const MatchingResultsView = {
         <td class="px-4 py-3 text-gray-600">${r.availability}</td>
         <td class="px-4 py-3">${Helpers.getSuitabilityBadge(r.suitability)}</td>
         <td class="px-4 py-3">
-          <button onclick="MatchingController.addOne(${r.employeeId})" class="px-2 py-1 text-xs bg-blue-50 text-blue-700 rounded hover:bg-blue-100" ${r.shortlisted ? 'disabled' : ''}>${r.shortlisted ? 'Shortlisted' : 'Add'}</button>
+          ${r.shortlisted
+            ? `<div class="flex items-center gap-2"><button class="px-2 py-1 text-xs bg-green-50 text-green-700 rounded" disabled>Shortlisted</button><button onclick="MatchingController.removeOne(event, ${r.employeeId})" class="px-2 py-1 text-xs bg-red-50 text-red-700 rounded hover:bg-red-100">Remove</button></div>`
+            : `<button onclick="MatchingController.addOne(event, ${r.employeeId})" class="px-2 py-1 text-xs bg-blue-50 text-blue-700 rounded hover:bg-blue-100">Add</button>`}
         </td>
       </tr>`;
   }

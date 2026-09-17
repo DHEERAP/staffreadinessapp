@@ -124,8 +124,13 @@ const OpportunityDetailView = {
 
           <!-- Action buttons -->
           <div class="flex justify-end gap-3 mt-6">
-            ${user.role === 'employee' ? `<button onclick="OpportunityController.saveOpportunity(${opp.id})" class="px-5 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition">Save Opportunity</button>
-            <button onclick="OpportunityController.expressInterest(${opp.id})" class="px-5 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition">Express Interest</button>` : ''}
+           ${user && user.role === 'employee' ? `
+    <button
+      onclick="OpportunityController.expressInterest(${opp.id})"
+      class="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs hover:bg-blue-700 transition express-btn-${opp.id}">
+      Express Interest
+    </button>
+  ` : ''}
           </div>
         </main>
       </div>`;

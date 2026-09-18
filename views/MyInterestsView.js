@@ -2,12 +2,25 @@
 const MyInterestsView = {
   render(user) {
     const sidebar = SidebarView.render(user, '/interests');
-    const interests = [
-      { role: 'Java Backend Developer', project: 'Banking Transformation Project', location: 'Hyderabad (Hybrid)', matchScore: 88, status: 'Under Review', expressedOn: '05 Sep 2026', suitability: 'Highly Suitable' },
-      { role: 'Full Stack Developer', project: 'Retail Digital Platform', location: 'Bengaluru (Remote)', matchScore: 76, status: 'Shortlisted', expressedOn: '02 Sep 2026', suitability: 'Suitable' },
-      { role: 'Data Engineer', project: 'Analytics Modernization', location: 'Pune (Hybrid)', matchScore: 62, status: 'Not Selected', expressedOn: '28 Aug 2026', suitability: 'Consider with Gaps' }
-    ];
-    const statusColor = { 'Under Review': 'bg-orange-100 text-orange-700', 'Shortlisted': 'bg-green-100 text-green-700', 'Not Selected': 'bg-red-100 text-red-600' };
+
+    // dynamic interests for the current user
+    const rawInterests = OpportunityModel.getUserInterests(user.id) || [];
+    const userApplications = OpportunityModel.getUserApplications(user.id) || [];
+
+    const interests = rawInterests.map(i => {
+      const opp = OpportunityModel.getById(i.opportunityId) || {};
+      const app = userApplications.find(a => a.opportunityId === i.opportunityId);
+      return {
+        role: opp.title || app?.title || '—',
+        project: opp.project || app?.project || '—',
+        location: opp.location || '—',
+        matchScore: app?.matchScore || opp?.matchScore || 0,
+        status: app?.status || 'Under Review',
+        expressedOn: i.date || app?.appliedOn || ''
+      };
+    });
+
+    const statusColor = { 'Under Review': 'bg-orange-100 text-orange-700', 'Shortlisted': 'bg-green-100 text-green-700', 'Not Selected': 'bg-red-100 text-red-600', 'In Progress': 'bg-blue-100 text-blue-700' };
     const scoreColor = s => s >= 85 ? 'text-green-600' : s >= 70 ? 'text-blue-600' : 'text-orange-500';
 
     return `
@@ -52,7 +65,7 @@ const MyInterestsView = {
 
           <!-- Interest Cards -->
           <div class="space-y-4">
-            ${interests.map(i => `
+            ${interests.length === 0 ? `<div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100 text-center text-gray-400">You have not expressed interest in any opportunities yet.</div>` : interests.map(i => `
               <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
                 <div class="flex items-start justify-between">
                   <div>
@@ -62,8 +75,8 @@ const MyInterestsView = {
                   </div>
                   <div class="text-right">
                     <p class="${scoreColor(i.matchScore)} text-lg font-bold">${i.matchScore}%</p>
-                    <p class="text-xs text-gray-500">${i.suitability}</p>
-                    <span class="mt-1 inline-block text-xs px-2 py-0.5 rounded-full font-medium ${statusColor[i.status]}">${i.status}</span>
+                    <p class="text-xs text-gray-500">Suitability</p>
+                    <span class="mt-1 inline-block text-xs px-2 py-0.5 rounded-full font-medium ${statusColor[i.status] || 'bg-gray-100 text-gray-600'}">${i.status}</span>
                   </div>
                 </div>
               </div>`).join('')}

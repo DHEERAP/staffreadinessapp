@@ -47,6 +47,22 @@ const OpportunityController = {
     if (!user) { Router.navigate('/login'); return; }
     const result = OpportunityModel.expressInterest(id, user.id);
     Helpers.showToast(result.message, result.success ? 'success' : 'info');
+    // re-render current view so the button state updates immediately
+    try {
+      const hash = (window.location.hash || '').replace('#', '');
+      if (hash === '/opportunities' || hash === '') {
+        this.showOpportunities();
+      } else if (hash === '/applications') {
+        AppController.render(MyApplicationsView.render(AuthModel.getCurrentUser()));
+      } else if (hash === '/interests') {
+        AppController.render(MyInterestsView.render(AuthModel.getCurrentUser()));
+      } else {
+        // re-open detail to refresh button if user was on detail page
+        this.viewDetails(id);
+      }
+    } catch (e) {
+      // ignore render failures
+    }
   },
 
   saveOpportunity(id) {

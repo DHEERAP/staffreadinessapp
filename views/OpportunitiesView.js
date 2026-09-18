@@ -103,7 +103,7 @@ const OpportunitiesView = {
             </div>
             <div class="flex gap-2">
               <button onclick="OpportunityController.viewDetails(${opp.id})" class="px-3 py-1.5 border border-gray-300 text-gray-600 rounded-lg text-xs hover:bg-gray-50 transition">View Details</button>
-              ${user && user.role === 'employee' ? `<button onclick="OpportunityController.expressInterest(${opp.id})" class="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs hover:bg-blue-700 transition express-btn-${opp.id}">Express Interest</button>` : ''}
+              ${user && user.role === 'employee' ? (OpportunityModel.hasExpressedInterest(opp.id, user.id) ? `<button disabled class="px-3 py-1.5 bg-gray-200 text-gray-500 rounded-lg text-xs">Interest Expressed</button>` : `<button onclick="OpportunityController.expressInterest(${opp.id})" class="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs hover:bg-blue-700 transition express-btn-${opp.id}">Express Interest</button>`) : ''}
             </div>
           </div>
         </div>
